@@ -1,4 +1,5 @@
 from mmdet.models.backbones import SSDVGG, HRNet, ResNet, ResNetV1d, ResNeXt
+from .imgclsmob import *
 from .multi_backbone import MultiBackbone
 from .nostem_regnet import NoStemRegNet
 from .pointnet2_sa_msg import PointNet2SAMSG
