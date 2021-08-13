@@ -4,7 +4,16 @@ _base_ = [
 ]
 # model settings
 model = dict(
+    pretrained='open-mmlab://detectron2/resnet50_caffe',
     backbone=dict(
+        type='ResNet',
+        depth=50,
+        num_stages=4,
+        out_indices=(0, 1, 2, 3),
+        frozen_stages=1,
+        norm_cfg=dict(type='BN', requires_grad=False),
+        norm_eval=True,
+        style='caffe',
         dcn=dict(type='DCNv2', deform_groups=1, fallback_on_stride=False),
         stage_with_dcn=(False, False, True, True)))
 
@@ -54,14 +63,14 @@ test_pipeline = [
         ])
 ]
 data = dict(
-    samples_per_gpu=2,
+    samples_per_gpu=3,
     workers_per_gpu=2,
     train=dict(pipeline=train_pipeline),
     val=dict(pipeline=test_pipeline),
     test=dict(pipeline=test_pipeline))
 # optimizer
 optimizer = dict(
-    lr=0.002 / 4, paramwise_cfg=dict(bias_lr_mult=2., bias_decay_mult=0.))
+    lr=0.002 / 4 * 3 / 2, paramwise_cfg=dict(bias_lr_mult=2., bias_decay_mult=0.))
 optimizer_config = dict(
     _delete_=True, grad_clip=dict(max_norm=35, norm_type=2))
 # learning policy
